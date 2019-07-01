@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const mongoose = require('mongoose');
 const Koa = require('koa');
 const mongoURI = require('./config/keys').mongodbURI;
+const bodyParser = require('koa-bodyparser');
 
 // 引入 users
 const users = require('./routes/api/users');
@@ -17,6 +18,9 @@ mongoose.connect(mongoURI, {
 
 const server = new Koa();
 const router = new Router();
+
+// 解析 form
+server.use(bodyParser());
 
 //路由跳转
 router.get('/', async ctx => {
