@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const Koa = require('koa');
 const mongoURI = require('./config/keys').mongodbURI;
 
+// 引入 users
+const users = require('./routes/api/users');
+
 mongoose.connect(mongoURI, {
     useNewUrlParser: true })
     .then(() => {
@@ -19,6 +22,9 @@ const router = new Router();
 router.get('/', async ctx => {
     ctx.body = "hello"
 });
+
+router.use('/api/users', users);
+
 
 // 配置路由
 server.use(router.routes());
