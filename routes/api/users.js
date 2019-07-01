@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const bcrypt = require('bcryptjs');
 const gravatar = require('gravatar');
 const tools = require('../../config/tools');
+const keys = require('../../config/keys');
+const jwt = require('jsonwebtoken');
 const router = new Router();
 
 // 引入 User
@@ -62,18 +64,23 @@ async function login(ctx) {
     const body = ctx.request.body;
     const password = body.password;
     const findResult = await User.find({email: body.email});
+    const user = findResult[0];
 
     // 如果没有查到直接返回，如果查到则对比密码是否正确
     if (findResult.length === 0) {
         ctx.status = 404;
         ctx.body = {email: '用户不存在'};
     } else {
-        const result = await bcrypt.compareSync(password, findResult[0].password);
+        const result = await bcrypt.compareSync(password, user.password);
 
         // 如果通过
         if (result) {
+            // 生成 token
+            const payload = {id: user.id, name: user.name, avatar: user.avatar};
+            const token = jwt.sign(payload, keys.secretOrSign, {expiresIn: '1h'});
+
             ctx.status = 200;
-            ctx.body = {success: '登录成功！'};
+            ctx.body = {success: true, token: 'Bearer ' + token};
         } else {
             ctx.status = 404;
             ctx.body = {error: '密码错误'};
