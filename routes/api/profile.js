@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const passport = require('koa-passport');
 const Profile = require('../../models/Profile');
 const validateProfileInput = require('../../validation/profile');
+const validateEducationInput = require('../../validation/education');
+const validateExperienceInput = require('../../validation/experience');
 const router = new Router();
 
 /*
@@ -123,7 +125,6 @@ router.get('/user', async ctx => {
     const user_id = ctx.query.user_id;
     const errors = {};
     const profile = await Profile.find({user: user_id}).populate('user', ['name', 'avatar']);
-    console.log(profile);
     if (profile.length > 0) {
         ctx.body = profile[0];
     } else {
@@ -149,6 +150,97 @@ router.get('/all', async ctx => {
        ctx.status = 404;
        ctx.body = errors;
    }
+});
+
+/*
+* @route POST api/profile/experience
+* @desc 添加工作经历
+* @access 方法私有
+* */
+router.post('/experience', passport.authenticate('jwt', { session: false }), async ctx => {
+   const profileFields = {};
+   profileFields.experience = [];
+   const body = ctx.request.body;
+   const user_id = ctx.state.user.id;
+   console.log(user_id);
+
+   // 验证输入是否合法
+    const {errors, isValid} = validateExperienceInput(body);
+    if (!isValid) {
+        ctx.status = 400;
+        ctx.body = errors;
+        return;
+    }
+
+    // 添加和更新数据
+    const profile = await Profile.find({user: user_id});
+    console.log(profile);
+    if (profile.length > 0) {
+        const newExp = {
+            title: body.title,
+            company: body.company,
+            from: body.from,
+            to: body.to,
+            location: body.location,
+            bio: body.bio,
+            description: body.description,
+            current: body.current
+        };
+
+        console.log(1);
+        profileFields.experience.unshift(newExp);
+        const experienceUpdate = await Profile.findOneAndUpdate({user: user_id}, {$set: profileFields}, {new: true});
+        ctx.body = experienceUpdate;
+    } else {
+        errors.noprofile = '没有该用户信息';
+        ctx.body = errors;
+        ctx.status = 404;
+    }
+});
+
+/*
+* @route POST api/profile/education
+* @desc 添加学习经历
+* @access 方法私有
+* */
+router.post('/education', passport.authenticate('jwt', { session: false }), async ctx => {
+    const profileFields = {};
+    profileFields.education = [];
+    const body = ctx.request.body;
+    const user_id = ctx.state.user.id;
+
+    // 验证输入是否合法
+    const {errors, isValid} = validateEducationInput(body);
+    if (!isValid) {
+        ctx.status = 400;
+        ctx.body = errors;
+        return;
+    }
+
+    // 添加和更新数据
+    const profile = await Profile.find({user: user_id});
+
+    if (profile.length > 0) {
+        const newEdu = {
+            school: body.school,
+            degree: body.degree,
+            from: body.from,
+            to: body.to,
+            fieldofstudy: body.fieldofstudy,
+            bio: body.bio,
+            description: body.description,
+            current: body.current
+        };
+
+        console.log(1);
+        profileFields.education.unshift(newEdu);
+        const experienceUpdate = await Profile.findOneAndUpdate({user: user_id}, {$set: profileFields}, {new: true});
+        ctx.body = experienceUpdate;
+    } else {
+        errors.noprofile = '没有该用户信息';
+        ctx.body = errors;
+        ctx.status = 404;
+    }
 });
 
 module.exports = router.routes();

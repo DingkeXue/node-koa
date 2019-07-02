@@ -36,7 +36,8 @@ const ProfileSchema = new schema({
     experience: [
         {
             current: {
-                type: Boolean
+                type: Boolean,
+                default: true
             },
             company: {
                 type: String
