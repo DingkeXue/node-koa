@@ -17,7 +17,6 @@
       <change beforePath="$PROJECT_DIR$/../JSONP/index.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../JSONP/jQuery.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../JSONP/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Throttle/Throttle.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Throttle/index.html" beforeDir="false" />
@@ -65,7 +64,7 @@
         <counts>
           <entry key="gitignore" value="15" />
           <entry key="html" value="562" />
-          <entry key="js" value="10318" />
+          <entry key="js" value="10659" />
           <entry key="json" value="49" />
           <entry key="md" value="99" />
         </counts>
@@ -74,7 +73,7 @@
         <counts>
           <entry key="HTML" value="562" />
           <entry key="JSON" value="49" />
-          <entry key="JavaScript" value="10318" />
+          <entry key="JavaScript" value="10659" />
           <entry key="Markdown" value="99" />
           <entry key="PLAIN_TEXT" value="15" />
         </counts>
@@ -113,8 +112,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/api/profile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-19">
-              <caret line="224" column="29" selection-start-line="224" selection-start-column="29" selection-end-line="224" selection-end-column="29" />
+            <state relative-caret-position="-42">
+              <caret line="245" column="29" selection-start-line="245" selection-start-column="29" selection-end-line="245" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -131,8 +130,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/validation/education.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="322">
+              <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -176,8 +175,8 @@
         <option value="$PROJECT_DIR$/validation/profile.js" />
         <option value="$PROJECT_DIR$/models/User.js" />
         <option value="$PROJECT_DIR$/models/Profile.js" />
-        <option value="$PROJECT_DIR$/validation/education.js" />
         <option value="$PROJECT_DIR$/validation/experience.js" />
+        <option value="$PROJECT_DIR$/validation/education.js" />
         <option value="$PROJECT_DIR$/routes/api/profile.js" />
       </list>
     </option>
@@ -266,16 +265,15 @@
       <option name="presentableId" value="Default" />
       <updated>1561941209043</updated>
       <workItem from="1561941210915" duration="20852000" />
-      <workItem from="1562025896178" duration="25706000" />
+      <workItem from="1562025896178" duration="26611000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46558000" />
+    <option name="totallyTimeSpent" value="47463000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1320" height="784" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25396827" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -427,13 +425,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/education.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/validation/experience.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -441,10 +432,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/validation/education.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/api/profile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-19">
-          <caret line="224" column="29" selection-start-line="224" selection-start-column="29" selection-end-line="224" selection-end-column="29" />
+        <state relative-caret-position="-42">
+          <caret line="245" column="29" selection-start-line="245" selection-start-column="29" selection-end-line="245" selection-end-column="29" />
         </state>
       </provider>
     </entry>

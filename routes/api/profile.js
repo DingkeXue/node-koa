@@ -189,8 +189,13 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), asy
 
         console.log(1);
         profileFields.experience.unshift(newExp);
-        const experienceUpdate = await Profile.findOneAndUpdate({user: user_id}, {$set: profileFields}, {new: true});
-        ctx.body = experienceUpdate;
+        const profileUpdate = await Profile.update({user: user_id}, {$push: {experience: profileFields.experience}}, {new: true});
+        if (profileUpdate.ok === 1) {
+            const profile = await Profile.find({ user: user_id });
+            ctx.body = profile;
+            ctx.status = 200;
+        }
+
     } else {
         errors.noprofile = '没有该用户信息';
         ctx.body = errors;
@@ -234,8 +239,14 @@ router.post('/education', passport.authenticate('jwt', { session: false }), asyn
 
         console.log(1);
         profileFields.education.unshift(newEdu);
-        const experienceUpdate = await Profile.findOneAndUpdate({user: user_id}, {$set: profileFields}, {new: true});
-        ctx.body = experienceUpdate;
+        const profileUpdate = await Profile.update({user: user_id}, {$push: {education: profileFields.education}}, {new: true});
+        if (profileUpdate.ok === 1) {
+            const profile = await Profile.find({ user: user_id}).populate('user', ['name', 'avatar']);
+            ctx.body = profile;
+            ctx.status = 200;
+        }
+
+
     } else {
         errors.noprofile = '没有该用户信息';
         ctx.body = errors;
