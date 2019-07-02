@@ -6,6 +6,7 @@ const keys = require('../../config/keys');
 const jwt = require('jsonwebtoken');
 const passport = require('koa-passport');
 const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 const router = new Router();
 
 // 引入 User
@@ -75,6 +76,14 @@ async function login(ctx) {
     const password = body.password;
     const findResult = await User.find({email: body.email});
     const user = findResult[0];
+
+    // 验证输入是否合法
+    const {errors, isValid} = validateLoginInput(ctx.request.body);
+    if (!isValid) {
+        ctx.status = 400;
+        ctx.body = errors;
+        return;
+    }
 
     // 如果没有查到直接返回，如果查到则对比密码是否正确
     if (findResult.length === 0) {
