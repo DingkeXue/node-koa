@@ -4,7 +4,7 @@
 const bcrypt = require('bcryptjs');
 
 const tools = {
-  enbcypt(password) {
+  enbcrypt(password) {
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync(password, salt);
       return hash;

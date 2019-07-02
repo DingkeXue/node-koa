@@ -4,6 +4,7 @@ const gravatar = require('gravatar');
 const tools = require('../../config/tools');
 const keys = require('../../config/keys');
 const jwt = require('jsonwebtoken');
+const passport = require('koa-passport');
 const router = new Router();
 
 // 引入 User
@@ -37,7 +38,7 @@ async function register(ctx) {
         const avatar = gravatar.url(body.email, {s: '200', r: 'pg', d: 'mm'});
         const newUser = new User({
             name: body.name,
-            password: tools.enbcypt(body.password),
+            password: tools.enbcrypt(body.password),
             avatar,
             email: body.email,
             date: body.date
@@ -87,6 +88,21 @@ async function login(ctx) {
         }
     }
 }
+
+/*
+* @route GET api/users/current
+* @desc 当前用户接口
+* @access 接口是私密的
+* */
+router.get('/current', passport.authenticate('jwt', { session: false }), async ctx => {
+   const user = ctx.state.user;
+   ctx.body = {
+       id: user.id,
+       name: user.name,
+       avatar: user.avatar,
+       email: user.email
+   }
+});
 
 
 module.exports = router.routes();

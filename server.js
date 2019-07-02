@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const mongoose = require('mongoose');
 const Koa = require('koa');
+const passport = require('koa-passport');
 const mongoURI = require('./config/keys').mongodbURI;
 const bodyParser = require('koa-bodyparser');
 
@@ -21,6 +22,11 @@ const router = new Router();
 
 // 解析 form
 server.use(bodyParser());
+
+// 使用passport
+server.use(passport.initialize());
+server.use(passport.session());
+require('./config/passport')(passport);
 
 //路由跳转
 router.get('/', async ctx => {
