@@ -32,60 +32,54 @@ const ProfileSchema = new schema({
     bio: {
         type: String
     },
-    experience: {
-        current: {
-            type: Boolean,
-            default: true
-        },
-        company: {
-            type: String
-        },
-        location: {
-            type: String
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        from: {
-            type: String,
-            required: true
-        },
-        to: {
-            type: String
-        },
-        desc: {
-            type: String
-        }
-    },
-    education: {
-        current: {
-            type: Boolean,
-            default: true
-        },
-        school: {
-            type: String,
-            required: true
-        },
-        degree: {
-            type: String,
-            required: true
-        },
-        fieldofstudy: {
-            type: String,
-            required: true
-        },
-        from: {
-            type: String,
-            required: true
-        },
-        to: {
-            type: String
-        },
-        desc: {
-            type: String
-        }
-    },
+    experience: [
+        {
+            current: {
+                type: Boolean
+            },
+            company: {
+                type: String
+            },
+            location: {
+                type: String
+            },
+            title: {
+                type: String
+            },
+            from: {
+                type: String
+            },
+            to: {
+                type: String
+            },
+            desc: {
+                type: String
+            }
+        }],
+    education: [
+        {
+            current: {
+                type: Boolean
+            },
+            school: {
+                type: String
+            },
+            degree: {
+                type: String
+            },
+            fieldofstudy: {
+                type: String
+            },
+            from: {
+                type: String
+            },
+            to: {
+                type: String
+            },
+            desc: {
+                type: String
+            }
+        }],
     social: {
       QQ: {
           type: Number
@@ -96,7 +90,7 @@ const ProfileSchema = new schema({
     },
     date: {
         type: Date,
-        required: Date.now
+        default: Date.now
     },
 });
 
