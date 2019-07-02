@@ -5,11 +5,12 @@ const schema = mongoose.Schema;
 const ProfileSchema = new schema({
    user: {
        type: String,
+       // 关联数据表
+        ref: 'users',
        required: true
    },
     handle: {
         type: String,
-        ref: 'users',
         required: true
     },
     company: {
