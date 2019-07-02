@@ -5,8 +5,9 @@ const passport = require('koa-passport');
 const mongoURI = require('./config/keys').mongodbURI;
 const bodyParser = require('koa-bodyparser');
 
-// 引入 users
+// 引入api
 const users = require('./routes/api/users');
+const profile = require('./routes/api/profile');
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true })
@@ -33,7 +34,9 @@ router.get('/', async ctx => {
     ctx.body = "hello"
 });
 
+// 路由分发
 router.use('/api/users', users);
+router.use('/api/profile', profile);
 
 
 // 配置路由
