@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const passport = require('koa-passport');
-const mongoose = require('mongoose');
 const Profile = require('../../models/Profile');
+const validateProfileInput = require('../../validation/profile');
 const router = new Router();
 
 /*
@@ -39,6 +39,14 @@ router.get('/', passport.authenticate('jwt', { session: false }), async ctx => {
 * @access 接口是私密的
 * */
 router.post('/', passport.authenticate('jwt', { session: false }), async ctx => {
+    // 首先验证输入内容
+    const { errors, isValid } = validateProfileInput(ctx.request.body);
+    if (!isValid) {
+         ctx.status = 400;
+         ctx.body = errors;
+         return;
+    }
+
     const profileFields = {};
     const user = ctx.state.user;
     profileFields.social = {};
