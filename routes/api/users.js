@@ -5,6 +5,7 @@ const tools = require('../../config/tools');
 const keys = require('../../config/keys');
 const jwt = require('jsonwebtoken');
 const passport = require('koa-passport');
+const validateRegisterInput = require('../../validation/register');
 const router = new Router();
 
 // 引入 User
@@ -28,6 +29,14 @@ async function test(ctx) {
 * */
 router.post('/register', register);
 async function register(ctx) {
+    // 验证输入是否合法
+    const {errors, isValid} = validateRegisterInput(ctx.request.body);
+    if (!isValid) {
+        ctx.status = 400;
+        ctx.body = errors;
+        return;
+    }
+
    // 存储到数据库
     const findResult = await User.find({email: ctx.request.body.email});
     if (findResult.length > 0) {
