@@ -174,7 +174,6 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), asy
 
     // 添加和更新数据
     const profile = await Profile.find({user: user_id});
-    console.log(profile);
     if (profile.length > 0) {
         const newExp = {
             title: body.title,
@@ -187,7 +186,6 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), asy
             current: body.current
         };
 
-        console.log(1);
         profileFields.experience.unshift(newExp);
         const profileUpdate = await Profile.update({user: user_id}, {$push: {experience: profileFields.experience}}, {new: true});
         if (profileUpdate.ok === 1) {
@@ -237,7 +235,6 @@ router.post('/education', passport.authenticate('jwt', { session: false }), asyn
             current: body.current
         };
 
-        console.log(1);
         profileFields.education.unshift(newEdu);
         const profileUpdate = await Profile.update({user: user_id}, {$push: {education: profileFields.education}}, {new: true});
         if (profileUpdate.ok === 1) {
@@ -251,6 +248,56 @@ router.post('/education', passport.authenticate('jwt', { session: false }), asyn
         errors.noprofile = '没有该用户信息';
         ctx.body = errors;
         ctx.status = 404;
+    }
+});
+
+/*
+* @route DELETE api/profile/experience?exp_id=id
+* @desc 删除工作经历
+* @access 方法私有
+* */
+router.delete('/experience', passport.authenticate('jwt', { session: false }), async ctx => {
+   const exp_id = ctx.query.exp_id;
+   const user_id = ctx.state.user.id;
+
+   // 查询数据库
+    const profile = await Profile.find({ user: user_id });
+    if (profile[0].experience.length > 0) {
+        // 找元素下标并删除
+        const removeIndex = profile[0].experience.map(item => item.id).indexOf(exp_id);
+        profile[0].experience.splice(removeIndex, 1);
+
+        const profileUpdate = await Profile.findOneAndUpdate({user: user_id }, {$set: profile[0]}, {new: true});
+        ctx.body = profileUpdate;
+        ctx.status = 200;
+    } else  {
+        ctx.status = 404;
+        ctx.body = {errors: '没有该用户经历'};
+    }
+});
+
+/*
+* @route DELETE api/profile/education?edu_id=id
+* @desc 删除学校经历
+* @access 方法私有
+* */
+router.delete('/education', passport.authenticate('jwt', { session: false }), async ctx => {
+    const edu_id = ctx.query.edu_id;
+    const user_id = ctx.state.user.id;
+
+    // 查询数据库
+    const profile = await Profile.find({ user: user_id });
+    if (profile[0].education.length > 0) {
+        // 找元素下标并删除
+        const removeIndex = profile[0].education.map(item => item.id).indexOf(edu_id);
+        profile[0].education.splice(removeIndex, 1);
+
+        const profileUpdate = await Profile.findOneAndUpdate({user: user_id }, {$set: profile[0]}, {new: true});
+        ctx.body = profileUpdate;
+        ctx.status = 200;
+    } else  {
+        ctx.status = 404;
+        ctx.body = {errors: '没有该用户经历'};
     }
 });
 
