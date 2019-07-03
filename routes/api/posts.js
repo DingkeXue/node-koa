@@ -178,5 +178,61 @@ router.post('/unlike', passport.authenticate('jwt', { session: false }), async c
     }
 });
 
+/*
+* @route POST api/posts/comment?id=id
+* @desc 添加单个评论接口
+* @access 接口私有的
+* */
+router.post('/comment', passport.authenticate('jwt', { session: false }), async ctx => {
+   const comment_id = ctx.query.id;
+   const body = ctx.request.body;
+   const user_id = ctx.state.user.id;
+
+   // 对输入进行验证
+    const { errors, isValid } = validatePostInput(body);
+    if (!isValid) {
+        ctx.body = errors;
+        ctx.status = 400;
+        return;
+    }
+
+   const newComment = {
+       text: body.text,
+       name: body.name,
+       avatar: body.avatar,
+       user: user_id
+   };
+
+   const post = await Post.findById(comment_id);
+   post.comments.unshift(newComment);
+   const commentUpdate = await Post.findOneAndUpdate({_id: comment_id}, {$set: post}, {new: true});
+   ctx.body = commentUpdate;
+   ctx.status = 200;
+});
+
+/*
+* @route DELETE api/posts/comment?id=id&comment_id=id
+* @desc 删除单个评论接口
+* @access 接口私有的
+* */
+router.delete('/comment',  passport.authenticate('jwt', { session: false }), async ctx => {
+   const user_id = ctx.state.user.id;
+   const comment_id = ctx.query.comment_id;
+   const id = ctx.query.id;
+
+   // 查看是否评论
+   const post = await Post.findById(id);
+   const commented = post.comments.map(item => item.toString()).length > 0;
+   if (commented) {
+       const removeIndex = post.comments.map(item => item._id.toString()).indexOf(comment_id);
+       post.comments.splice(removeIndex, 1);
+       const commentUpdate = await Post.findOneAndUpdate({_id: id}, {$set: post}, {new: true});
+       ctx.body = commentUpdate;
+       ctx.status = 200;
+   } else {
+       ctx.body = {errors: '您还没有评论'};
+       ctx.status = 404;
+   }
+});
 
 module.exports = router.routes();
