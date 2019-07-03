@@ -116,5 +116,67 @@ router.delete('/',passport.authenticate('jwt', { session: false }), async ctx =>
     }
 });
 
+/*
+* @route POST api/posts/like?id=id
+* @desc 用户点赞接口
+* @access 接口私有的
+* */
+router.post('/like', passport.authenticate('jwt', { session: false }), async ctx => {
+    const like_id = ctx.query.id;
+    const user_id = ctx.state.user.id;
+
+    // 查询用户是否有个人信息
+    const profile = await Profile.find({user: user_id});
+    if (profile.length > 0) {
+        // 查询该用户评论
+        const post = await Post.findById(like_id);
+        console.log(post);
+
+        // 查看是否已点赞
+        const liked = post.likes.filter(item => item.user.toString() === user_id).length > 0;
+        if (liked) {
+            ctx.body = {alreadyLiked: '您已点过赞'};
+            ctx.status = 200;
+        } else {
+            post.likes.push({user: user_id});
+            const likeUpdate = await Post.findOneAndUpdate({_id: like_id}, {$set: post}, {new: true});
+            ctx.body = likeUpdate;
+            ctx.status = 200;
+        }
+    } else {
+        ctx.status = 404;
+        ctx.body = '没有该用户详情';
+    }
+});
+
+/*
+* @route POST api/posts/unlike?id=id
+* @desc 用户取消点赞接口
+* @access 接口私有的
+* */
+router.post('/unlike', passport.authenticate('jwt', { session: false }), async ctx => {
+   const unlike_id = ctx.query.id;
+   const user_id = ctx.state.user.id;
+
+   // 查询该用户是否有个人信息
+    const profile = await Profile.find({user: user_id});
+    if (profile.length > 0) {
+        const post = await Post.findById(unlike_id);
+
+        // 查询是否点过赞
+        const liked = post.likes.filter(item => item.user.toString() === user_id).length > 0;
+        if (liked) {
+            const removeIndex = post.likes.map(item => item.user.toString()).indexOf(unlike_id);
+            post.likes.splice(removeIndex, 1);
+            const unlikeUpdate = await Post.findOneAndUpdate({_id: unlike_id}, {$set: post}, {new: true});
+            ctx.body = unlikeUpdate;
+            ctx.status = 200;
+        } else {
+            ctx.status = 200;
+            ctx.body = {alreadyLiked: '您还没有点过赞'};
+        }
+    }
+});
+
 
 module.exports = router.routes();
