@@ -8,6 +8,7 @@ const bodyParser = require('koa-bodyparser');
 // 引入api
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
+const posts = require('./routes/api/posts');
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true })
@@ -37,6 +38,7 @@ router.get('/', async ctx => {
 // 路由分发
 router.use('/api/users', users);
 router.use('/api/profile', profile);
+router.use('/api/posts', posts);
 
 
 // 配置路由
