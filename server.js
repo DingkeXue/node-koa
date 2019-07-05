@@ -5,7 +5,7 @@ const passport = require('koa-passport');
 const mongoURI = require('./config/keys').mongodbURI;
 const bodyParser = require('koa-bodyparser');
 
-// 引入api
+// 引入api接口
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
